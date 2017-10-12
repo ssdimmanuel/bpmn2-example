@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/BPMN Plugin/src" modelPluginID="BPMN_Plugin" forceOverwrite="true"
+    modelName="Mymodel" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    booleanFlagsField="" importerID="org.eclipse.emf.importer.ecore" complianceLevel="5.0"
+    copyrightFields="false" operationReflection="true" importOrganizing="true">
+  <foreignModel>mymodel.ecore</foreignModel>
+  <genPackages prefix="Model" basePackage="com.bpmn.model" resource="XML" disposableProviderFactory="true"
+      fileExtensions="bpmn" ecorePackage="mymodel.ecore#/">
+    <genClasses ecoreClass="mymodel.ecore#//DocumentRoot">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference mymodel.ecore#//DocumentRoot/taskConfig"/>
+    </genClasses>
+    <genClasses ecoreClass="mymodel.ecore#//Parameter">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute mymodel.ecore#//Parameter/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute mymodel.ecore#//Parameter/value"/>
+    </genClasses>
+    <genClasses ecoreClass="mymodel.ecore#//TaskConfig">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference mymodel.ecore#//TaskConfig/parameters"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>
