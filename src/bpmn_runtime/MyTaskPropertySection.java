@@ -26,15 +26,11 @@ public class MyTaskPropertySection extends DefaultPropertySection {
 
 	@Override
 	protected AbstractDetailComposite createSectionRoot() {
-		// This constructor is used to create the detail composite for use in
-		// the Property Viewer.
 		return new MyTaskDetailComposite(this);
 	}
 
 	@Override
 	public AbstractDetailComposite createSectionRoot(Composite parent, int style) {
-		// This constructor is used to create the detail composite for use in
-		// the popup Property Dialog.
 		return new MyTaskDetailComposite(parent, style);
 	}
 
@@ -42,43 +38,35 @@ public class MyTaskPropertySection extends DefaultPropertySection {
 
 		public MyTaskDetailComposite(AbstractBpmn2PropertySection section) {
 			super(section);
+			System.out.println("Creating composite#1");
 		}
 
 		public MyTaskDetailComposite(Composite parent, int style) {
 			super(parent, style);
+			System.out.println("Creating composite#2");
 		}
 
 		@Override
 		public void createBindings(EObject be) {
-			// This must be a Task because this Property Tab is only active for
-			// Tasks.
-			// The Property Tab will only display the Parameter list in our
-			// TaskConfig
-			// model element (see the definition of this element in
-			// MyModel.ecore).
 			Task myTask = (Task) be;
 			TaskConfig taskConfig = null;
-			// Fetch all TaskConfig extension objects from the Task
+			
+			System.out.println("Inside a task: "+myTask);
+			
+			
 			List<TaskConfig> allTaskConfigs = ModelDecorator.getAllExtensionAttributeValues(myTask, TaskConfig.class);
+			
+			System.out.println("taskconfig count "+allTaskConfigs.size());
 			if (allTaskConfigs.size() == 0) {
-				// There are none, so we need to construct a new TaskConfig
-				// which is required by the Property Sheet UI.
 				taskConfig = ModelFactory.eINSTANCE.createTaskConfig();
 				TargetRuntime rt = getTargetRuntime();
-				// We need our CustomTaskDescriptor for this Task. The ID must
-				// match
-				// the one defined in the <customTask> extension point in
-				// plugin.xml
-				CustomTaskDescriptor ctd = rt.getCustomTask("org.imixs.workflow.bpmn.customTask");
-				// Get the model feature for the "taskConfig" element name.
-				// Again, this must match the <property> element in <customTask>
-				EStructuralFeature feature = ctd.getModelDecorator().getEStructuralFeature(be, "taskConfig");
-				// Add the newly constructed TaskConfig object to the Task's
-				// Extension Values list.
-				// Note that we will delay the actual insertion of the new
-				// object until some feature
-				// of the object changes (e.g. the Parameter.name)
-				ModelDecorator.addExtensionAttributeValue(myTask, feature, taskConfig, true);
+				
+				rt.getCustomTaskDescriptors();
+				for(CustomTaskDescriptor ctd : rt.getCustomTaskDescriptors()){
+					EStructuralFeature feature = ctd.getModelDecorator().getEStructuralFeature(be, "taskConfig");
+					ModelDecorator.addExtensionAttributeValue(myTask, feature, taskConfig, true);
+				}
+				
 			} else {
 				// Else reuse the existing TaskConfig object.
 				taskConfig = allTaskConfigs.get(0);
